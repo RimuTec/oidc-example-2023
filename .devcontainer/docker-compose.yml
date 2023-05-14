@@ -30,5 +30,43 @@ services:
       networks:
          rimutec:
 
+   oidc-example-kc:
+      image: rimutec/keycloak:0.1
+      build:
+         context: .
+         dockerfile: Dockerfile.keycloak
+      container_name: oidc-example-kc
+      hostname: oidc-example-kc.local
+      ports:
+         - "30524:8080"
+         - "30525:8443"
+      environment:
+         KC_HOSTNAME: localhost
+         KC_HOSTNAME_STRICT: "false"
+         KC_DB: postgres
+         KC_DB_USERNAME: dba
+         KC_DB_PASSWORD: password
+         KC_DB_SCHEMA: public
+         KC_DB_URL: jdbc:postgresql://oidc-example-kc-db.local:5432/
+         KEYCLOAK_ADMIN: admin
+         KEYCLOAK_ADMIN_PASSWORD: password
+      entrypoint: /opt/keycloak/bin/kc.sh start-dev
+      depends_on:
+         - oidc-example-kc-db
+      networks:
+         rimutec:
+
+   oidc-example-kc-db:
+      image: postgres
+      container_name: oidc-example-kc-db
+      hostname: oidc-example-kc-db.local
+      environment:
+         POSTGRES_PASSWORD: password
+         POSTGRES_USER: dba
+      ports:
+         - "30526:5432"
+      networks:
+         rimutec:
+
 networks:
    rimutec:
