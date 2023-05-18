@@ -24,6 +24,9 @@ services:
          # Using double quotes for port mapping to avoid YAML reading it as a number with a different base
          # e.g. "3333:22" would result in port numbers greater than 130000 which are clearly invalid.
          # Without double quotes YAML interprets it as a number based on 22. [Manfred, 24aug2022]
+      environment:
+         CLIENT_ID: example-service
+         CLIENT_SECRET: Gvasb4IrsOq8B0s93UHHN6tXznkOxpK9
       volumes:
          - ..:/work
       command: bash -c "/work/.devcontainer/init.sh && sleep infinity"
